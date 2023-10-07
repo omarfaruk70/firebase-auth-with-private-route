@@ -25,6 +25,9 @@ const Navbar = () => {
     <li>
        <Link to={'/register'}>Register</Link>
     </li>
+    <li>
+       <Link to={'/orders'}>Orders</Link>
+    </li>
     </>
   return (
     <div className="navbar bg-base-100">

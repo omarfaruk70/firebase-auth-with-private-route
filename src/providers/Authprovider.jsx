@@ -10,25 +10,27 @@ export const AuthContext = createContext(null)
 const Authprovider = ({children}) => {
     // console.log(children);
     const [user, setUser] = useState(null);
+    const [loading,setLoading] = useState(true)
 
     // creating the first user
     const createUser  = (email, password) => {
-       return createUserWithEmailAndPassword(auth, email, password)
+        setLoading(true)
+       return createUserWithEmailAndPassword(auth, email, password);
     }
 
 
     // login the users
     const signInUser = (email, password) => {
+        setLoading(true)
      return signInWithEmailAndPassword(auth, email, password)
     }
 
     // ei website e kono user login / registration kora ache kina ta check kora hoy onAuthStateChange diye
     useEffect(()=>{
       const unSubscribe = onAuthStateChanged(auth, currentUser =>{
-            if(currentUser){
-                console.log('current value of the current user', currentUser);
-                setUser(currentUser)
-            }
+              console.log('current value of the current user', currentUser);
+              setUser(currentUser)
+              setLoading(false)
         })
         return () =>{
             unSubscribe();
@@ -38,14 +40,16 @@ const Authprovider = ({children}) => {
 
     // sign out users
     const logOut = () =>{
-      return  signOut(auth)
+        setLoading(true)
+        return  signOut(auth)
     }
 
    const authInfo  = {
     user,
     createUser,
     signInUser,
-    logOut
+    logOut,
+    loading
     }
 
     return (
