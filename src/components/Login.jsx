@@ -1,26 +1,35 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/Authprovider";
 
 const Login = () => {
-  const {signInUser} = useContext(AuthContext);
-  
-    const handleSubmitForm = (e) =>{
-        e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        console.log(email, password);
+  const { signInUser, signinWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-        signInUser(email, password)
-        .then(result => {
-          console.log(result.user);
-        })
-        .catch(error => {
-          console.log(error.message);
-        })
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
 
-        
-        
+    signInUser(email, password)
+      .then((result) => {
+        e.target.reset();
+        navigate("/");
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    };
+    const handleSigninwithGoogle  = () => {
+      signinWithGoogle()
+      .then(result => {
+        console.log(result.user);
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
     }
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -61,7 +70,15 @@ const Login = () => {
               <button className="btn btn-primary">Login</button>
             </div>
           </form>
-          <p className="mx-auto">New here ? please <Link className="text-green-400" to={'/register'}>Register</Link></p>
+          <p className="mx-auto">
+            New here ? please{" "}
+            <Link className="text-green-400" to={"/register"}>
+              Register
+            </Link>
+          </p>
+          <Link>
+            <button onClick={handleSigninwithGoogle} className="btn btn-ghost">Google</button>
+          </Link>
         </div>
       </div>
     </div>

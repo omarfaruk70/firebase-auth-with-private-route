@@ -14,6 +14,7 @@ const Register = () => {
         
         createUser(email, password)
         .then(result =>{
+          e.target.reset()   // reset the full form input tag
           console.log(result);
         })
         .catch(error => {
